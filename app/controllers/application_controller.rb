@@ -1,3 +1,7 @@
-class ApplicationController < ActionController::Base
-  protect_from_forgery with: :exception
+class ApplicationController < ActionController::API
+    include Response
+
+    rescue_from ActiveRecord::RecordInvalid do |e|
+      json_response({ message: e.message }, :unprocessable_entity)
+    end
 end
