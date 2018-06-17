@@ -12,7 +12,7 @@ class Transaction < ApplicationRecord
   scope :one_day, ->{ where("created_at > ?", 1.days.ago.to_time.localtime) }
   scope :seven_days, ->{ where("created_at > ?", 7.days.ago.to_time.localtime) }
   scope :lifetime, ->{ all }
-  
+  scope :category, ->(type) {where('category = ?', type)} 
   private
 
   def must_be_greater_than_zero
