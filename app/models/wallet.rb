@@ -4,7 +4,15 @@ class Wallet < ApplicationRecord
   validate :support_usd_cad
 
   belongs_to :user
-
+  
+  def self.build_wallet(params, user)
+    wallet = self.new(balance: params[:balance], balance_currency: (params[:currency]||"usd").downcase, user: user)
+    wallet
+  end
+  
+  def display_balance
+    (self.balance_cents/100).to_f
+  end
   private
 
   def support_usd_cad
