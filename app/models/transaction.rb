@@ -9,6 +9,10 @@ class Transaction < ApplicationRecord
   after_save :make_immutable
   after_find :make_immutable
 
+  scope :one_day, ->{ where("created_at > ?", 1.days.ago.to_time.localtime) }
+  scope :seven_days, ->{ where("created_at > ?", 7.days.ago.to_time.localtime) }
+  scope :lifetime, ->{ all }
+  
   private
 
   def must_be_greater_than_zero
