@@ -1,10 +1,20 @@
 class FinancialSummary
   attr_accessor :transaction_type, :currency, :range, :user, :transactions 
+  RANGES = ["one_day", "seven_days", "lifetime"]
+
   class << self
-    [:one_day, :seven_days, :lifetime].each do |input_range|
+    RANGES.each do |input_range|
       define_method(:"#{input_range}") do |input|
         self.new(input_range, input[:currency], input[:user])
       end
+    end
+
+    def validate_input_params(params)
+      errors = []
+      errors << ("Invalid report_range, accepts only#{RANGES.join(',')}") unless RANGES.include?(params[:report_range]) 
+      errors << ("Invalid category, accepts only #{Transaction::CATEGORIES.join(',')}") unless Transaction::CATEGORIES.include?(params[:category]) 
+      raise InputError.new(errors) if errors.present?
+      return true
     end
   end
 

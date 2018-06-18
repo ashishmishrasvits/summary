@@ -1,8 +1,8 @@
 class Transaction < ApplicationRecord
   monetize :amount_cents
-
+  CATEGORIES = %w[deposit refund withdraw]
   validate :must_be_greater_than_zero
-  validates :category, inclusion: %w[deposit refund withdraw]
+  validates :category, inclusion: CATEGORIES 
 
   belongs_to :user
 

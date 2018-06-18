@@ -5,4 +5,7 @@ Rails.application.routes.draw do
   resources :wallets, :only =>[:create] do 
     get ':email/', to: 'wallets#list', on: :collection
   end
+  resources :financial_summary, :only => [] do
+    post 'display', to: 'financial_summary#display', on: :collection
+  end
 end
