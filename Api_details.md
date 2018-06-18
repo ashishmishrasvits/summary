@@ -1,7 +1,8 @@
 Below are the Api's created for this project - 
+## start application - 
+bundle exec rails s
 
-
-1 - Create User - 
+## Create User - 
 
 POST  - /api/users
 Header - Content-Type : application/json
@@ -13,7 +14,7 @@ response -
     "user_id": 1
 }
 
-2 - Create wallet for User
+## Create wallet for User
 Post - /api/wallets
 Header - Content-Type : application/json
 body - {"wallet" : {"email" : "myemail@example.com", "currency" : "usd", "balance" : "100"}}
@@ -24,7 +25,7 @@ response -
     "wallet_id": 1
 }
 
-3 - Display all wallets for a user
+## Display all wallets for a user
 Get - /api/wallets/myemail@example.com
 Header - Content-Type : application/json
 
@@ -44,7 +45,7 @@ Header - Content-Type : application/json
     ]
 }
 
-4 - Create a transaction for given wallet
+## Create a transaction for given wallet
  Post - /api/transactions
  Header - Content-Type : application/json
  body - {"transaction" : {"email" : "myemail@example.com", "wallet_id" : "1", "currency" : "usd", "amount": "100", "category": "deposit"}}
@@ -56,7 +57,7 @@ Header - Content-Type : application/json
     "old_wallet_amount": "$100.00"
 }
 
-5 - Get Financial Summary by category
+## Get Financial Summary by category
   Get - /api/financial_summary/display?email=myemail@example.com&currency=usd&category=deposit&report_range=lifetime
   Header - Content-Type : application/json
 
