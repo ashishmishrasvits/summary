@@ -13,4 +13,8 @@ class ApplicationController < ActionController::API
     message = e.error_message.is_a?(Array) ? e.error_message.join('\n') : e.error_message
     json_response({message: message},:unprocessable_entity)
   end
+
+  rescue_from ArgumentError, ActionController::ParameterMissing do |e|
+    json_response({ message: e.message }, :unprocessable_entity)
+  end
 end

@@ -12,43 +12,43 @@ RSpec.describe FinancialSummaryController, type: :controller do
     end
 
     it "displays financial summary for one_day and category deposit" do
-      post :display, params: {email: @user.email, category: "deposit", report_range: "lifetime", currency: "usd"}
+      get :display, params: {email: @user.email, category: "deposit", report_range: "lifetime", currency: "usd"}
       expect(JSON.parse(response.body)).to include("category"=>"deposit","report_range"=>"lifetime","count"=>2,"currency" =>"USD","amount" =>"42.12")
       expect(response.status).to eq 200
     end
 
     it "displays financial summary for one_day with requested currency type" do
-      post :display, params: {email: @user.email, category: "deposit", report_range: "lifetime", currency: "cad"}
+      get :display, params: {email: @user.email, category: "deposit", report_range: "lifetime", currency: "cad"}
       expect(JSON.parse(response.body)).to include("category"=>"deposit","report_range"=>"lifetime","count"=>2,"currency" =>"CAD","amount" =>"52.45")
       expect(response.status).to eq 200
     end
 
     it "displays financial summary ignoring case for input fields" do
-      post :display, params: {email: @user.email, category: "DEPOSIT", report_range: "LIFETIME", currency: "cad"}
+      get :display, params: {email: @user.email, category: "DEPOSIT", report_range: "LIFETIME", currency: "cad"}
       expect(JSON.parse(response.body)).to include("category"=>"deposit","report_range"=>"lifetime","count"=>2,"currency" =>"CAD","amount" =>"52.45")
       expect(response.status).to eq 200
     end
 
     it "responds with message if currency is unsupported" do 
-      post :display, params: {email: @user.email, category: "deposit", report_range: "lifetime", currency: "CA"}
+      get :display, params: {email: @user.email, category: "deposit", report_range: "lifetime", currency: "CA"}
       expect(JSON.parse(response.body)).to include("message" => "Unknown currency 'ca'")
       expect(response.status).to eq 422
     end
 
     it "reponds with user not found if user doesnt exists" do
-      post :display, params: {email: "someemai@email.com", category: "deposit", report_range: "lifetime", currency: "CA"}
+      get :display, params: {email: "someemai@email.com", category: "deposit", report_range: "lifetime", currency: "CA"}
       expect(JSON.parse(response.body)).to include("message" =>"User not found")    
       expect(response.status).to eq 404
     end
 
     it "responds with invalid report range for unknown range" do
-      post :display, params: {email: @user.email, category: "deposit", report_range: "two_days", currency: "usd"}
+      get :display, params: {email: @user.email, category: "deposit", report_range: "two_days", currency: "usd"}
       expect(JSON.parse(response.body)).to include("message" => "Invalid report_range, accepts onlyone_day,seven_days,lifetime")    
       expect(response.status).to eq 422
     end
 
     it "responds with invalid category for unknown category" do
-      post :display, params: {email: @user.email, category: "deposit1", report_range: "one_day", currency: "usd"}
+      get :display, params: {email: @user.email, category: "deposit1", report_range: "one_day", currency: "usd"}
       expect(JSON.parse(response.body)).to include("message" => "Invalid category, accepts only deposit,refund,withdraw")    
       expect(response.status).to eq 422
     end

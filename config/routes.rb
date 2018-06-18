@@ -3,11 +3,11 @@ Rails.application.routes.draw do
   scope 'api' do
     resources :users, :only =>[:create]
     resources :wallets, :only =>[:create] do 
-      get ':email/', to: 'wallets#list', on: :collection
+      get ':email/', to: 'wallets#list', on: :collection,constraints: { email: /[^\/]+/}
     end
     resources :transactions, :only =>[:create]
     resources :financial_summary, :only => [] do
-      post 'display', to: 'financial_summary#display', on: :collection
+      get 'display', to: 'financial_summary#display', on: :collection
     end
   end
 end

@@ -11,7 +11,7 @@ RSpec.describe TransactionsController, type: :controller do
     ["deposit","withdraw","refund"].map do |category|
       it "creates transaction for given user and wallet for #{category}" do
      
-        post :create, params: {email: @user.email, wallet_id: @wallet.id, currency:"usd", amount:"100", category:category}
+        post :create, params: {transaction: {email: @user.email, wallet_id: @wallet.id, currency:"usd", amount:"100", category:category}}
         expect(response.status).to eq 200
         jresponse = JSON.parse(response.body) 
         trans = Transaction.first
@@ -27,7 +27,7 @@ RSpec.describe TransactionsController, type: :controller do
     end
 
     it "renders invalid transaction message if wallet amount goes lower then 0" do
-      post :create, params: {email: @user.email, wallet_id: @wallet.id, currency:"usd", amount:"300", category: "withdraw"}
+      post :create, params: {transaction: {email: @user.email, wallet_id: @wallet.id, currency:"usd", amount:"300", category: "withdraw"}}
       expect(response.status).to eq 422
       expect(JSON.parse(response.body)).to include("message"=>"Validation failed: Balance Must be postive or zero")
     end

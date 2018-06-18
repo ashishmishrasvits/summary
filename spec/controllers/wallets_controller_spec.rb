@@ -7,33 +7,33 @@ RSpec.describe WalletsController, type: :controller do
     end
 
     it "returns wallet id when new wallet is created" do
-      post :create, params: { email: "email@email.com", balance: 100, currency: "usd"}
+      post :create, params: {wallet: { email: "email@email.com", balance: 100, currency: "usd"}}
       expect(JSON.parse(response.body)).to include("message" => "Wallet successfully created")
       expect(JSON.parse(response.body)).to include("wallet_id")
       expect(response.status).to eql 200
     end
 
     it "creates wallet if currency is not passed using USD as default" do
-      post :create, params: { email: "email@email.com", balance: 100 }
+      post :create, params: {wallet: { email: "email@email.com", balance: 100 }}
       expect(JSON.parse(response.body)).to include("message"  => "Wallet successfully created")
       expect(JSON.parse(response.body)).to include("wallet_id")     
       expect(response.status).to eql 200
     end
 
     it "render error message when user doesnt exists" do
-      post :create, params: { email: "email@email1.com", balance: 100, currency: "usd"}
+      post :create, params: {wallet: { email: "email@email1.com", balance: 100, currency: "usd"}}
       expect(JSON.parse(response.body)).to include("message"=>"User not found")
       expect(response.status).to eql 404
     end
 
     it "render error message when wrong currency type is passed" do
-      post :create, params: { email: "email@email.com", balance: 100, currency: "sd"}
+      post :create, params: {wallet: { email: "email@email.com", balance: 100, currency: "sd"}}
       expect(JSON.parse(response.body)).to include("message"=>"Unknown currency 'sd'")
       expect(response.status).to eql 422 
     end
 
     it "render input error if wallet has non numeric balance" do
-      post :create, params: { email: "email@email.com", balance: "abc", currency: "usd"}
+      post :create, params: {wallet: { email: "email@email.com", balance: "abc", currency: "usd"}}
       expect(JSON.parse(response.body)).to include("message"=>"Invalid balance amount")
       expect(response.status).to eql 422 
     end
