@@ -23,6 +23,12 @@ RSpec.describe FinancialSummaryController, type: :controller do
       expect(response.status).to eq 200
     end
 
+    it "displays financial summary ignoring case for input fields" do
+      post :display, params: {email: @user.email, category: "DEPOSIT", report_range: "LIFETIME", currency: "cad"}
+      expect(JSON.parse(response.body)).to include("category"=>"deposit","report_range"=>"lifetime","count"=>2,"currency" =>"CAD","amount" =>"52.45")
+      expect(response.status).to eq 200
+    end
+
     it "responds with message if currency is unsupported" do 
       post :display, params: {email: @user.email, category: "deposit", report_range: "lifetime", currency: "CA"}
       expect(JSON.parse(response.body)).to include("message" => "Unknown currency 'ca'")

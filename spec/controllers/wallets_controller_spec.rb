@@ -28,7 +28,13 @@ RSpec.describe WalletsController, type: :controller do
 
     it "render error message when wrong currency type is passed" do
       post :create, params: { email: "email@email.com", balance: 100, currency: "sd"}
-      expect(JSON.parse(response.body)).to include("message"=>"Validation failed: Balance currency Only support for USD, CAD currencies")
+      expect(JSON.parse(response.body)).to include("message"=>"Unknown currency 'sd'")
+      expect(response.status).to eql 422 
+    end
+
+    it "render input error if wallet has non numeric balance" do
+      post :create, params: { email: "email@email.com", balance: "abc", currency: "usd"}
+      expect(JSON.parse(response.body)).to include("message"=>"Invalid balance amount")
       expect(response.status).to eql 422 
     end
   end

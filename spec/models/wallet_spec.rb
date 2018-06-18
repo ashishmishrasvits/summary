@@ -19,6 +19,28 @@ describe Wallet do
       subject.balance *= 6.789
       expect(subject.balance).to eq(Money.from_amount(51.5327078891258, :usd))
     end
+    
+    it "allows to perform deposit from wallet" do
+      wallet = build(:wallet, balance: Money.from_amount(20,"usd"))
+      wallet.deposit(Money.from_amount(3,"usd"))
+      expect(wallet.balance).to eq Money.from_amount(23,"usd")
+    end
+
+    it "allows to perform withdraw from wallet" do
+      wallet = build(:wallet, balance: Money.from_amount(20,"usd"))
+      wallet.withdraw(Money.from_amount(3,"usd"))
+      expect(wallet.balance).to eq Money.from_amount(17,"usd")
+    end
+
+    it "allows to perform refund from wallet" do
+      wallet = build(:wallet, balance: Money.from_amount(20,"usd"))
+      wallet.refund(Money.from_amount(3,"usd"))
+      expect(wallet.balance).to eq Money.from_amount(23,"usd")
+    end
+
+    it "only allows postive integer for amount on wallet" do
+      expect(build(:wallet, balance: Money.from_amount(-20,"usd")).valid?).to eq(false) 
+    end 
   end
 
   it 'only supports usd and cad wallets' do

@@ -11,8 +11,8 @@ class FinancialSummary
 
     def validate_input_params(params)
       errors = []
-      errors << ("Invalid report_range, accepts only#{RANGES.join(',')}") unless RANGES.include?(params[:report_range]) 
-      errors << ("Invalid category, accepts only #{Transaction::CATEGORIES.join(',')}") unless Transaction::CATEGORIES.include?(params[:category]) 
+      errors << ("Invalid report_range, accepts only#{RANGES.join(',')}") unless RANGES.include?(params[:report_range].downcase) 
+      errors << ("Invalid category, accepts only #{Transaction::CATEGORIES.join(',')}") unless Transaction::CATEGORIES.include?(params[:category].downcase) 
       raise InputError.new(errors) if errors.present?
       return true
     end
